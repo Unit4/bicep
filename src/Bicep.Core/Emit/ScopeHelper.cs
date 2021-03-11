@@ -137,6 +137,11 @@ namespace Bicep.Core.Emit
                     }
 
                     return new ScopeData { RequestedScope = ResourceScope.Resource, ResourceScopeSymbol = targetResourceSymbol, IndexExpression = indexExpression };
+
+                case { } when scopeSymbol is ModuleSymbol targetModuleSymbol:
+                    // using a module as a scope of another module is not allowed
+                    logInvalidScopeFunc(scopeProperty.Value, ResourceScope.Module, supportedScopes);
+                    return null;
             }
 
             // type validation should have already caught this
